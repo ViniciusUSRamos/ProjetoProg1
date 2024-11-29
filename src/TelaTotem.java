@@ -576,7 +576,10 @@ public class TelaTotem extends javax.swing.JFrame {
             escrever.println("-------------------------------------");
             escrever.printf("Total: %24.2f%n", pedido.getValorTotal());
             escrever.println("=====================================");
+            
+            emitePopupAviso("NFS-e " + pedidoSelecionado + " gerada com sucesso!");
         } catch (Exception e) {
+            emitePopupAviso("Falha ao gerar NFS-e!");
         }
     }//GEN-LAST:event_gerarRelatorioIndividual
 
@@ -589,19 +592,22 @@ public class TelaTotem extends javax.swing.JFrame {
         String caminho = "RelatorioGeral.txt";
 
         try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
-            List<Pedido> pedidosSalvos = getPedidosSalvos(); // Obtém todos os pedidos salvos
+            List<Pedido> pedidosSalvos = getPedidosSalvos(); 
 
             for (int i = 0; i < pedidosSalvos.size(); i++) {
                 Pedido pedido = pedidosSalvos.get(i);
-                escrever.println("Pedido #" + (i + 1)); // Cabeçalho do pedido
+                escrever.println("Pedido #" + (i + 1)); 
                 for (ItemPedido item : pedido.getItens()) {
-                    escrever.println(item.toString(true)); // Detalhes do item formatado
+                    escrever.println(item.toString(true)); 
                 }
-                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); // Total do pedido
-                escrever.println("-------------------------"); // Separador
+                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); 
+                escrever.println("-------------------------"); 
             }
+            
+            emitePopupAviso("Relatório gerado com sucesso!");
         } catch (Exception e) {
-            e.printStackTrace(); // Mostra qualquer exceção que ocorra
+            e.printStackTrace(); 
+            emitePopupAviso("Falha ao gerar o relatório!");
         }
     }//GEN-LAST:event_gerarRelaorioGeral
     
