@@ -1,11 +1,14 @@
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,6 +17,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import java.util.Comparator;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -59,6 +63,7 @@ public class TelaTotem extends javax.swing.JFrame {
         for (Pedido p : getPedidosSalvos()) {
             System.out.println(p.getValorTotal());
         }
+        //gerarRelaorioGeral();
     }
 
     /**
@@ -95,13 +100,15 @@ public class TelaTotem extends javax.swing.JFrame {
         jTotalPedido = new javax.swing.JFormattedTextField();
         jSalvarButton = new javax.swing.JButton();
         jVoltarButton = new javax.swing.JButton();
-        jCancelarButton = new javax.swing.JButton();
+        jGeraRelatorioIndividual = new javax.swing.JButton();
+        jCancelarButton1 = new javax.swing.JButton();
         jVerPedidos = new javax.swing.JPanel();
         jTituloInicio1 = new javax.swing.JLabel();
         jSubtituloInicio1 = new javax.swing.JLabel();
         jVoltarButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPedidosList = new javax.swing.JList<>();
+        jVoltarButton2 = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -263,12 +270,21 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jCancelarButton.setText("Cancelar pedido");
-        jCancelarButton.setToolTipText("");
-        jCancelarButton.setEnabled(false);
-        jCancelarButton.addActionListener(new java.awt.event.ActionListener() {
+        jGeraRelatorioIndividual.setText("Gerar Nota Fiscal");
+        jGeraRelatorioIndividual.setToolTipText("");
+        jGeraRelatorioIndividual.setEnabled(false);
+        jGeraRelatorioIndividual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelarPedido(evt);
+                gerarRelatorioIndividual(evt);
+            }
+        });
+
+        jCancelarButton1.setText("Cancelar pedido");
+        jCancelarButton1.setToolTipText("");
+        jCancelarButton1.setEnabled(false);
+        jCancelarButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCancelarButton1cancelarPedido(evt);
             }
         });
 
@@ -290,7 +306,7 @@ public class TelaTotem extends javax.swing.JFrame {
                     .addGroup(jNovoPedidoLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCancelarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jGeraRelatorioIndividual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jSalvarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jVoltarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)
@@ -310,7 +326,8 @@ public class TelaTotem extends javax.swing.JFrame {
                             .addGroup(jNovoPedidoLayout.createSequentialGroup()
                                 .addComponent(jListaPedidoLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jCancelarButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jNovoPedidoLayout.setVerticalGroup(
@@ -340,9 +357,11 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addComponent(jTotalPedidoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 133, Short.MAX_VALUE)
-                .addComponent(jCancelarButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addComponent(jCancelarButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jGeraRelatorioIndividual)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSalvarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jVoltarButton)
@@ -376,13 +395,20 @@ public class TelaTotem extends javax.swing.JFrame {
         jPedidosList.setModel(new DefaultListModel<String>()
         );
         jPedidosList.setAutoscrolls(false);
-        jPedidosList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPedidosList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPedidosList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 pedidoSelecionado(evt);
             }
         });
         jScrollPane3.setViewportView(jPedidosList);
+
+        jVoltarButton2.setText("Relatório de Pedidos");
+        jVoltarButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gerarRelaorioGeral(evt);
+            }
+        });
 
         javax.swing.GroupLayout jVerPedidosLayout = new javax.swing.GroupLayout(jVerPedidos);
         jVerPedidos.setLayout(jVerPedidosLayout);
@@ -394,7 +420,8 @@ public class TelaTotem extends javax.swing.JFrame {
                     .addComponent(jTituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                     .addComponent(jSubtituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jVoltarButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane3)
+                    .addComponent(jVoltarButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jVerPedidosLayout.setVerticalGroup(
@@ -405,10 +432,12 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSubtituloInicio1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jVoltarButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jVoltarButton1)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTela.addTab("Pedidos", new javax.swing.ImageIcon(getClass().getResource("/Icons/format-list-bulleted-custom.png")), jVerPedidos); // NOI18N
@@ -530,23 +559,74 @@ public class TelaTotem extends javax.swing.JFrame {
         jTela.setSelectedIndex(1);
     }//GEN-LAST:event_pedidoSelecionado
 
-    private void cancelarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedido
-        pedido = new Pedido();
+    private void gerarRelatorioIndividual(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelatorioIndividual
         
-        if (modoEdicao) {
-            alternaModoEdicao(false);
+        //TODO: trabalhar com o método pedidoSelecionado
+        int pedidoSelecionado = jPedidosList.getSelectedIndex();
+        String caminho = "NFS-e - Pedido " + pedidoSelecionado + ".txt";
+        
+        try (PrintWriter escrever = new PrintWriter(caminho)){
+            escrever.println("============ NOTA FISCAL ============");
+            escrever.println("------------ BAR DO TIRI ------------");
+            escrever.println("-------------------------------------\n");
             
-            ArrayList<Pedido> pedidos = getPedidosSalvos();
-            
-            pedidos.remove(indiceEdicao);
-            
-            setPedidosSalvos(pedidos);
+            for (ItemPedido item : pedido.getItens()) {
+                escrever.printf("%-20s %10.2f%n", item.getNome(), item.getValor());
+            }
+            escrever.println("-------------------------------------");
+            escrever.printf("Total: %24.2f%n", pedido.getValorTotal());
+            escrever.println("=====================================");
+        } catch (Exception e) {
         }
-        
-        atualizaListaPedido();
-        
-        emitePopupAviso("Pedido cancelado com sucesso!" );
-    }//GEN-LAST:event_cancelarPedido
+    }//GEN-LAST:event_gerarRelatorioIndividual
+
+    private void jCancelarButton1cancelarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelarButton1cancelarPedido
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCancelarButton1cancelarPedido
+
+    private void gerarRelaorioGeral(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelaorioGeral
+        // TODO add your handling code here:
+        String caminho = "RelatorioGeral.txt";
+
+        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
+            List<Pedido> pedidosSalvos = getPedidosSalvos(); // Obtém todos os pedidos salvos
+
+            for (int i = 0; i < pedidosSalvos.size(); i++) {
+                Pedido pedido = pedidosSalvos.get(i);
+                escrever.println("Pedido #" + (i + 1)); // Cabeçalho do pedido
+                for (ItemPedido item : pedido.getItens()) {
+                    escrever.println(item.toString(true)); // Detalhes do item formatado
+                }
+                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); // Total do pedido
+                escrever.println("-------------------------"); // Separador
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Mostra qualquer exceção que ocorra
+        }
+    }//GEN-LAST:event_gerarRelaorioGeral
+    
+    
+    /*private void gerarRelaorioGeral() {                                    
+        // TODO add your handling code here:
+        String caminho = "RelatorioGeral.txt";
+
+        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
+            List<Pedido> pedidosSalvos = getPedidosSalvos(); // Obtém todos os pedidos salvos
+
+            for (int i = 0; i < pedidosSalvos.size(); i++) {
+                Pedido pedido = pedidosSalvos.get(i);
+                escrever.println("Pedido #" + (i + 1)); // Cabeçalho do pedido
+                for (ItemPedido item : pedido.getItens()) {
+                    escrever.println(item.toString(true)); // Detalhes do item formatado
+                }
+                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); // Total do pedido
+                escrever.println("-------------------------"); // Separador
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Mostra qualquer exceção que ocorra
+        }
+    }*/
+    
     
     private ArrayList<Pedido> getPedidosSalvos() {
         FileInputStream fis;
@@ -599,11 +679,11 @@ public class TelaTotem extends javax.swing.JFrame {
         
         if (pedido.getItens().isEmpty()) {
             jSalvarButton.setEnabled(false);
-            jCancelarButton.setEnabled(false);
+            jGeraRelatorioIndividual.setEnabled(false);
             return;
         }
         
-        jCancelarButton.setEnabled(true);
+        jGeraRelatorioIndividual.setEnabled(true);
         jSalvarButton.setEnabled(true);
     }
     
@@ -672,9 +752,10 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JButton jAddButton;
     private javax.swing.JLabel jAlimentoLabel;
     private javax.swing.JComboBox<String> jAlimentoSelect;
-    private javax.swing.JButton jCancelarButton;
+    private javax.swing.JButton jCancelarButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JButton jExcluirItemButton;
+    private javax.swing.JButton jGeraRelatorioIndividual;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jListaPedido;
     private javax.swing.JLabel jListaPedidoLabel;
@@ -700,6 +781,42 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JPanel jVerPedidos;
     private javax.swing.JButton jVoltarButton;
     private javax.swing.JButton jVoltarButton1;
+    private javax.swing.JButton jVoltarButton2;
     private javax.swing.JButton verPedidosButton;
     // End of variables declaration//GEN-END:variables
+
+    private void geraRelatorioTodos(){
+        //TODO: trabalhar com o método getPedidosSalvos
+        
+        String caminho = "RelatorioGeral.txt";
+        
+        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))){
+            
+            int i=0;
+            for (ItemPedido itens : pedido.getItens()){
+                System.out.println(getPedidosSalvos().get(i));
+                escrever.println(getPedidosSalvos().get(i));
+                i++;
+            }
+            
+        } catch (Exception e) {
+        }
+        
+    }
+    /*private void gerarRelatorioIndividual(java.awt.event.ActionEvent evt){
+        //TODO: trabalhar com o método pedidoSelecionado
+        
+        String caminho = "Relatorio.txt";
+        
+        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))){
+            
+            for (ItemPedido itens : pedido.getItens()){
+                escrever.println("conteúdo");
+            }
+            
+        } catch (Exception e) {
+        }
+        
+    }*/
+
 }

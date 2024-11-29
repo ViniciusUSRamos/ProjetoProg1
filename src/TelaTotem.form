@@ -226,10 +226,10 @@
                               </Group>
                               <EmptySpace min="0" pref="87" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCancelarButton" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jGeraRelatorioIndividual" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jSalvarButton" max="32767" attributes="0"/>
                                   <Component id="jVoltarButton" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
@@ -255,6 +255,7 @@
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jExcluirItemButton" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="jCancelarButton1" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -291,9 +292,11 @@
                       <Component id="jTotalPedidoLabel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTotalPedido" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="133" max="32767" attributes="0"/>
-                      <Component id="jCancelarButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace pref="110" max="32767" attributes="0"/>
+                      <Component id="jCancelarButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jGeraRelatorioIndividual" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSalvarButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jVoltarButton" min="-2" max="-2" attributes="0"/>
@@ -441,14 +444,24 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="telaInicial"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jCancelarButton">
+            <Component class="javax.swing.JButton" name="jGeraRelatorioIndividual">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gerar Nota Fiscal"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gerarRelatorioIndividual"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jCancelarButton1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancelar pedido"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarPedido"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCancelarButton1cancelarPedido"/>
               </Events>
             </Component>
           </SubComponents>
@@ -478,6 +491,7 @@
                           <Component id="jSubtituloInicio1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jVoltarButton1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane3" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jVoltarButton2" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -491,10 +505,12 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSubtituloInicio1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" pref="510" max="32767" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jVoltarButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jScrollPane3" min="-2" pref="471" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jVoltarButton2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jVoltarButton1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -551,7 +567,7 @@
                     </Property>
                     <Property name="autoscrolls" type="boolean" value="false"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Cursor em Forma de M&#xe3;o"/>
+                      <Color id="Default Cursor"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -563,6 +579,14 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="jVoltarButton2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Pedidos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gerarRelaorioGeral"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
