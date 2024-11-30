@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author mathe
+ * @author Matheus Dresch
  */
 public class ItemCardapio extends Item {
     private final List<String> sabores;

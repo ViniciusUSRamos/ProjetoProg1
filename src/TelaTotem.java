@@ -1,5 +1,5 @@
 
-import java.io.BufferedWriter;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,40 +22,39 @@ import java.time.format.DateTimeFormatter;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
- * @author mathe
+ * @author Matheus Dresch
  */
 public class TelaTotem extends javax.swing.JFrame {
 
     List<ItemCardapio> alimentos;
     Pedido pedido = new Pedido();
-    
+
     int itemPedidoSelecionado;
     boolean modoEdicao = false;
     int indiceEdicao;
-    
+
     File listaPedidosArquivo = new File("Pedidos.bin");
-    
+
     /**
      * Creates new form TelaInicial
      */
     public TelaTotem() {
         initComponents();
-        
+
         alimentos = new ArrayList<>();
         alimentos.add(new ItemCardapio("Baguete", 11.00f, List.of("Frango", "Salame")));
         alimentos.add(new ItemCardapio("Pastel", 5.50f, List.of("Frango", "Calabresa", "Frango c/ Catupiry")));
-        alimentos.add(new ItemCardapio("Pizza", 22.00f, List.of("Quatro Queijos", "Frango c/ Catupiry", "Calabresa"))); 
-        alimentos.add(new ItemCardapio("Enroladinho", 2.00f, List.of())); 
-        alimentos.add(new ItemCardapio("Pão de Queijo", 1.50f, List.of())); 
+        alimentos.add(new ItemCardapio("Pizza", 22.00f, List.of("Quatro Queijos", "Frango c/ Catupiry", "Calabresa")));
+        alimentos.add(new ItemCardapio("Enroladinho", 2.00f, List.of()));
+        alimentos.add(new ItemCardapio("Pão de Queijo", 1.50f, List.of()));
         alimentos.add(new ItemCardapio("Wrap", 7.00f, List.of("Frango", "Rucula", "Salame")));
-        alimentos.add(new ItemCardapio("Sanduíche", 4.00f, List.of())); 
-        alimentos.add(new ItemCardapio("Bauru", 6.00f, List.of())); 
+        alimentos.add(new ItemCardapio("Sanduíche", 4.00f, List.of()));
+        alimentos.add(new ItemCardapio("Bauru", 6.00f, List.of()));
         alimentos.add(new ItemCardapio("Croissant", 3.00f, List.of()));
-        
-        for (ItemCardapio alimento: alimentos) {
+
+        for (ItemCardapio alimento : alimentos) {
             jAlimentoSelect.addItem(alimento.toString());
         }
     }
@@ -91,11 +90,12 @@ public class TelaTotem extends javax.swing.JFrame {
         jListaPedido = new javax.swing.JList<>();
         jExcluirItemButton = new javax.swing.JButton();
         jTotalPedidoLabel = new javax.swing.JLabel();
-        jTotalPedido = new javax.swing.JFormattedTextField();
         jSalvarButton = new javax.swing.JButton();
         jVoltarButton = new javax.swing.JButton();
         jGeraRelatorioIndividual = new javax.swing.JButton();
         jCancelarButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jTotalPedido = new javax.swing.JLabel();
         jVerPedidos = new javax.swing.JPanel();
         jTituloInicio1 = new javax.swing.JLabel();
         jSubtituloInicio1 = new javax.swing.JLabel();
@@ -203,7 +203,7 @@ public class TelaTotem extends javax.swing.JFrame {
 
         jSubtitulo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jSubtitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jSubtitulo.setText("Edi");
+        jSubtitulo.setText("Novo Pedido");
 
         jAlimentoLabel.setLabelFor(jAlimentoSelect);
         jAlimentoLabel.setText("Alimento:");
@@ -217,7 +217,7 @@ public class TelaTotem extends javax.swing.JFrame {
         jSaborLabel.setLabelFor(jSaborSelect);
         jSaborLabel.setText("Sabor:");
 
-        jAddButton.setText("Adicionar ao pedido");
+        jAddButton.setText("Adicionar Item ao Pedido");
         jAddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adicionaItemPedido(evt);
@@ -235,7 +235,7 @@ public class TelaTotem extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jListaPedido);
 
-        jExcluirItemButton.setText("Excluir Item");
+        jExcluirItemButton.setText("Excluir Item Selecionado");
         jExcluirItemButton.setEnabled(false);
         jExcluirItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -243,11 +243,9 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
+        jTotalPedidoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jTotalPedidoLabel.setLabelFor(jTotalPedido);
         jTotalPedidoLabel.setText("Total do pedido:");
-
-        jTotalPedido.setEditable(false);
-        jTotalPedido.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getCurrencyInstance())));
 
         jSalvarButton.setText("Salvar");
         jSalvarButton.setEnabled(false);
@@ -282,46 +280,58 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jTotalPedido.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        jTotalPedido.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jTotalPedido.setText("R$ 0,00");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTotalPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTotalPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jNovoPedidoLayout = new javax.swing.GroupLayout(jNovoPedido);
         jNovoPedido.setLayout(jNovoPedidoLayout);
         jNovoPedidoLayout.setHorizontalGroup(
             jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jNovoPedidoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTotalPedidoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jGeraRelatorioIndividual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSalvarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jVoltarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                    .addComponent(jAddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSubtitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jNovoPedidoLayout.createSequentialGroup()
+                        .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jAlimentoSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jAlimentoLabel))
+                        .addGap(8, 8, 8)
                         .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                                .addGap(135, 135, 135)
-                                .addComponent(jTotalPedidoLabel))
-                            .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                                .addGap(87, 87, 87)
-                                .addComponent(jTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 87, Short.MAX_VALUE))
-                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jGeraRelatorioIndividual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSalvarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jVoltarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jAddButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jAlimentoSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jAlimentoLabel))
-                                .addGap(8, 8, 8)
-                                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                                        .addComponent(jSaborLabel)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(jSaborSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                                .addComponent(jListaPedidoLabel)
+                                .addComponent(jSaborLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jSaborSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jNovoPedidoLayout.createSequentialGroup()
+                        .addComponent(jListaPedidoLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jExcluirItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCancelarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jNovoPedidoLayout.setVerticalGroup(
@@ -350,16 +360,16 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jTotalPedidoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addComponent(jCancelarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jGeraRelatorioIndividual)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSalvarButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jVoltarButton)
-                .addGap(15, 15, 15))
+                .addContainerGap())
         );
 
         jTitulo.getAccessibleContext().setAccessibleDescription("");
@@ -384,7 +394,6 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jPedidosList.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPedidosList.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jPedidosList.setModel(new DefaultListModel<String>()
         );
@@ -444,48 +453,51 @@ public class TelaTotem extends javax.swing.JFrame {
 
     private void telaInicial(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_telaInicial
         pedido = new Pedido();
-        
+
         atualizaListaPedido();
-        
+
         this.jTela.setSelectedIndex(0);
     }//GEN-LAST:event_telaInicial
 
     private void novoPedido(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoPedido
         jSubtitulo.setText("Novo pedido");
-        
+
+        modoEdicao = false;
+        indiceEdicao = -1;
+
         this.jTela.setSelectedIndex(1);
     }//GEN-LAST:event_novoPedido
 
     private void atualizaSabores(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizaSabores
         ItemCardapio alimentoSelecionado = getItemCardapioSelecionado();
-        
+
         jSaborSelect.removeAllItems();
-        
+
         if (alimentoSelecionado.getSabores().isEmpty()) {
             jSaborSelect.setEnabled(false);
             return;
         }
-        
+
         jSaborSelect.setEnabled(true);
-        
-        for (String sabor: alimentoSelecionado.getSabores()) {
+
+        for (String sabor : alimentoSelecionado.getSabores()) {
             jSaborSelect.addItem(sabor);
         }
     }//GEN-LAST:event_atualizaSabores
 
     private void adicionaItemPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionaItemPedido
         ItemCardapio itemSelecionado = getItemCardapioSelecionado();
-    
+
         ItemPedido itemPedido = new ItemPedido(itemSelecionado.getNome(), itemSelecionado.getValor());
-        
+
         if (jSaborSelect.getSelectedIndex() >= 0) {
             String saborSelecionado = itemSelecionado.getSabores().get(jSaborSelect.getSelectedIndex());
-            
+
             itemPedido.setSabor(saborSelecionado);
         }
-        
+
         pedido.addItem(itemPedido);
-        
+
         atualizaListaPedido();
     }//GEN-LAST:event_adicionaItemPedido
 
@@ -494,46 +506,46 @@ public class TelaTotem extends javax.swing.JFrame {
             jExcluirItemButton.setEnabled(false);
             return;
         }
-        
+
         itemPedidoSelecionado = jListaPedido.getSelectedIndex();
         jExcluirItemButton.setEnabled(true);
     }//GEN-LAST:event_itemPedidoSelecionado
 
     private void excluirItemPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirItemPedido
         pedido.removeItem(itemPedidoSelecionado);
-        
+
         jExcluirItemButton.setEnabled(false);
-        
+
         atualizaListaPedido();
     }//GEN-LAST:event_excluirItemPedido
 
     private void salvarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarPedido
         ArrayList<Pedido> pedidosSalvos = getPedidosSalvos();
-      
+
         if (modoEdicao) {
             pedidosSalvos.set(indiceEdicao, pedido);
         } else {
             pedidosSalvos.add(pedido);
         }
-        
+
         setPedidosSalvos(pedidosSalvos);
 
         alternaModoEdicao(false);
-        
+
         pedido = new Pedido();
         atualizaListaPedido();
         jExcluirItemButton.setEnabled(false);
-        
-        emitePopupAviso("Pedido salvo com sucesso!" );
+
+        emitePopupAviso("Pedido salvo com sucesso!");
     }//GEN-LAST:event_salvarPedido
 
     private void verPedidos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPedidos
         this.jTela.setSelectedIndex(2);
-        
+
         DefaultListModel<String> lista = (DefaultListModel<String>) jPedidosList.getModel();
-        
+
         lista.removeAllElements();
-        
+
         for (int i = 0; i < getPedidosSalvos().size(); i++) {
             lista.addElement(String.format("Pedido #%03d", i));
         }
@@ -545,65 +557,74 @@ public class TelaTotem extends javax.swing.JFrame {
 
     private void pedidoSelecionado(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pedidoSelecionado
         int indicePedido = jPedidosList.getSelectedIndex();
-        
+
+        if (indicePedido < 0) {
+            return;
+        }
+
         alternaModoEdicao(indicePedido);
         pedido = getPedidosSalvos().get(indicePedido);
         atualizaListaPedido();
-        
+
         jTela.setSelectedIndex(1);
     }//GEN-LAST:event_pedidoSelecionado
 
     private void gerarRelatorioIndividual(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelatorioIndividual
-        
-        //TODO: trabalhar com o método pedidoSelecionado
-        int pedidoSelecionado = jPedidosList.getSelectedIndex();
-        String caminho = "NFS-e - Pedido " + pedidoSelecionado + ".txt";
-        
-        try (PrintWriter escrever = new PrintWriter(caminho)){
+        int numeroPedido = modoEdicao ? indiceEdicao : getPedidosSalvos().size();
+        String caminho = "NFS-e - Pedido " + numeroPedido + ".txt";
+
+        try (PrintWriter escrever = new PrintWriter(caminho)) {
             escrever.println("============ NOTA FISCAL ============");
             escrever.println("------------ BAR DO TIRI ------------");
-            escrever.println("-------------------------------------\n");
-            
+            escrever.println(String.format("-------- %s --------", getDataHoraAtual()));
+            escrever.println("Nome do item:                  Valor:");
+
             for (ItemPedido item : pedido.getItens()) {
-                escrever.printf("%-20s %16.2f%n", item.getNome(), item.getValor());
+                escrever.printf("%-20s %16.2f%n", item.toString(true), item.getValor());
             }
             escrever.println("-------------------------------------");
             escrever.printf("Total: %30.2f%n", pedido.getValorTotal());
             escrever.println("=====================================");
-            
-            emitePopupAviso("NFS-e - Pedido " + pedidoSelecionado + " gerada com sucesso!");
+
+            emitePopupAviso("NFS-e - Pedido " + numeroPedido + " gerada com sucesso!");
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().edit(new File(caminho));
+            }
         } catch (Exception e) {
             emitePopupAviso("Falha ao gerar NFS-e!");
         }
+
+
     }//GEN-LAST:event_gerarRelatorioIndividual
 
     private void cancelarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedido
         pedido = new Pedido();
-        
+
         if (modoEdicao) {
             alternaModoEdicao(false);
-            
+
             ArrayList<Pedido> pedidos = getPedidosSalvos();
-            
+
             pedidos.remove(indiceEdicao);
-            
+
             setPedidosSalvos(pedidos);
         }
-        
+
         atualizaListaPedido();
-        
-        emitePopupAviso("Pedido cancelado com sucesso!" );
+
+        emitePopupAviso("Pedido cancelado com sucesso!");
     }//GEN-LAST:event_cancelarPedido
 
     private void gerarRelaorioGeral(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelaorioGeral
         String caminho = "RelatorioGeral.txt";
 
         try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
-            List<Pedido> pedidosSalvos = getPedidosSalvos(); 
+            List<Pedido> pedidosSalvos = getPedidosSalvos();
 
             escrever.println("========== RELATÓRIO GERAL ==========");
             escrever.println("----------   BAR DO TIRI   ----------");
-            escrever.println(String.format("-------- %s --------\n", getDataHoraAtual()));
+            escrever.println(String.format("-------- %s --------", getDataHoraAtual()));
 
             for (int i = 0; i < pedidosSalvos.size(); i++) {
                 Pedido p = pedidosSalvos.get(i);
@@ -612,7 +633,7 @@ public class TelaTotem extends javax.swing.JFrame {
                 escrever.println("Nome do item:                  Valor:");
 
                 for (ItemPedido item : p.getItens()) {
-                    escrever.printf("%-30s %6.2f%n", getDescricaoItem(item) , item.getValor());
+                    escrever.printf("%-30s %6.2f%n", item.toString(true), item.getValor());
                 }
 
                 escrever.println("-------------------------------------");
@@ -621,14 +642,14 @@ public class TelaTotem extends javax.swing.JFrame {
             escrever.println("=====================================");
 
             emitePopupAviso("Relatório gerado com sucesso!");
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().edit(new File(caminho));
+            }
         } catch (Exception e) {
             emitePopupAviso("Falha ao gerar o relatório!");
         }
     }//GEN-LAST:event_gerarRelaorioGeral
-
-    private Object getDescricaoItem(ItemPedido item) {
-        return item.getSabor() == null ? item.getNome() : item.getNome() + " de " + item.getSabor();
-    }
 
     private String getDataHoraAtual() {
         LocalDateTime now = LocalDateTime.now();
@@ -636,52 +657,28 @@ public class TelaTotem extends javax.swing.JFrame {
         String formattedDateTime = now.format(formatter);
         return formattedDateTime;
     }
-    
-    
-    /*private void gerarRelaorioGeral() {                                    
-        // TODO add your handling code here:
-        String caminho = "RelatorioGeral.txt";
 
-        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
-            List<Pedido> pedidosSalvos = getPedidosSalvos(); // Obtém todos os pedidos salvos
-
-            for (int i = 0; i < pedidosSalvos.size(); i++) {
-                Pedido pedido = pedidosSalvos.get(i);
-                escrever.println("Pedido #" + (i + 1)); // Cabeçalho do pedido
-                for (ItemPedido item : pedido.getItens()) {
-                    escrever.println(item.toString(true)); // Detalhes do item formatado
-                }
-                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); // Total do pedido
-                escrever.println("-------------------------"); // Separador
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // Mostra qualquer exceção que ocorra
-        }
-    }*/
-    
-    
     private ArrayList<Pedido> getPedidosSalvos() {
         FileInputStream fis;
         ArrayList<Pedido> listaPedidos = new ArrayList<>();
-        
+
         try {
             fis = new FileInputStream(listaPedidosArquivo);
-            
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            listaPedidos = (ArrayList<Pedido>) ois.readObject();
-            
-            ois.close();
+
+            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+                listaPedidos = (ArrayList<Pedido>) ois.readObject();
+            }
             fis.close();
-            
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaTotem.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(TelaTotem.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         return listaPedidos;
     }
-    
+
     private void setPedidosSalvos(ArrayList<Pedido> pedidos) {
         FileOutputStream fos;
 
@@ -697,55 +694,55 @@ public class TelaTotem extends javax.swing.JFrame {
             Logger.getLogger(TelaTotem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void atualizaListaPedido() {
         DefaultListModel<String> lista = (DefaultListModel<String>) jListaPedido.getModel();
-        
+
         lista.removeAllElements();
-        
+
         for (ItemPedido itemPedido : pedido.getItens()) {
             lista.addElement(itemPedido.toString(true));
         }
-        
+
         jTotalPedido.setText(String.format("R$ %.2f", pedido.getValorTotal()));
-        
+
         if (pedido.getItens().isEmpty()) {
             jCancelarButton.setEnabled(false);
             jSalvarButton.setEnabled(false);
             jGeraRelatorioIndividual.setEnabled(false);
             return;
         }
-        
+
         jCancelarButton.setEnabled(true);
         jGeraRelatorioIndividual.setEnabled(true);
         jSalvarButton.setEnabled(true);
     }
-    
+
     private ItemCardapio getItemCardapioSelecionado() {
         return alimentos.get(jAlimentoSelect.getSelectedIndex());
     }
-    
+
     private void alternaModoEdicao(int indice) {
         indiceEdicao = indice;
-        
+
         alternaModoEdicao(true);
     }
-    
+
     private void alternaModoEdicao(boolean estado) {
         if (estado) {
             modoEdicao = true;
             jSubtitulo.setText(String.format("Editando pedido #%03d", indiceEdicao));
             return;
         }
-        
+
         modoEdicao = false;
         jSubtitulo.setText("Novo pedido");
     }
-    
+
     private void emitePopupAviso(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem);
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -793,6 +790,7 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JLabel jListaPedidoLabel;
     private javax.swing.JPanel jNovoPedido;
     private javax.swing.JButton jNovoPedidoButton;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JList<String> jPedidosList;
     private javax.swing.JLabel jSaborLabel;
     private javax.swing.JComboBox<String> jSaborSelect;
@@ -808,7 +806,7 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JLabel jTitulo;
     private javax.swing.JLabel jTituloInicio;
     private javax.swing.JLabel jTituloInicio1;
-    private javax.swing.JFormattedTextField jTotalPedido;
+    private javax.swing.JLabel jTotalPedido;
     private javax.swing.JLabel jTotalPedidoLabel;
     private javax.swing.JPanel jVerPedidos;
     private javax.swing.JButton jVoltarButton;
@@ -816,39 +814,4 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JButton jVoltarButton2;
     private javax.swing.JButton verPedidosButton;
     // End of variables declaration//GEN-END:variables
-
-    private void geraRelatorioTodos(){
-        //TODO: trabalhar com o método getPedidosSalvos
-        
-        String caminho = "RelatorioGeral.txt";
-        
-        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))){
-            
-            int i=0;
-            for (ItemPedido itens : pedido.getItens()){
-                System.out.println(getPedidosSalvos().get(i));
-                escrever.println(getPedidosSalvos().get(i));
-                i++;
-            }
-            
-        } catch (Exception e) {
-        }
-        
-    }
-    /*private void gerarRelatorioIndividual(java.awt.event.ActionEvent evt){
-        //TODO: trabalhar com o método pedidoSelecionado
-        
-        String caminho = "Relatorio.txt";
-        
-        try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))){
-            
-            for (ItemPedido itens : pedido.getItens()){
-                escrever.println("conteúdo");
-            }
-            
-        } catch (Exception e) {
-        }
-        
-    }*/
-
 }

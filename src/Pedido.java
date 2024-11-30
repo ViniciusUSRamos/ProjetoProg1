@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author mathe
+ * @author Matheus Dresch
  */
 public class Pedido implements Serializable {
      private static final long serialVersionUID = 1L;

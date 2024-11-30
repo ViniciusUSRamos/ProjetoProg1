@@ -1,6 +1,3 @@
-
-import java.io.Serializable;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -8,7 +5,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author mathe
+ * @author Matheus Dresch
  */
 public class ItemPedido extends Item{
      private static final long serialVersionUID = 1L;
@@ -37,11 +34,11 @@ public class ItemPedido extends Item{
         return "ItemPedido={nome=" + nome + ",valor=" + valor + ",sabor=" + sabor + "}";
     }
     
-    public String toString(boolean formatted) {
-        if (! formatted) return toString();
+    public String toString(boolean formatado) {
+        if (! formatado) return toString();
         
         if (sabor == null) return super.toString();
         
-        return String.format("%s de %s - R$ %.2f", nome, sabor, valor);
+        return String.format("%s de %s", nome, sabor);
     }
 }

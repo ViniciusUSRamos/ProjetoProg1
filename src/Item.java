@@ -1,6 +1,5 @@
 
 import java.io.Serializable;
-import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -9,7 +8,7 @@ import java.util.List;
 
 /**
  *
- * @author mathe
+ * @author Matheus Dresch
  */
 abstract class Item implements Serializable{
     protected final String nome;
@@ -30,6 +29,6 @@ abstract class Item implements Serializable{
 
     @Override
     public String toString() {
-        return String.format("%s - R$ %.2f", nome, valor);
+        return String.format("%s", nome);
     }
 }
