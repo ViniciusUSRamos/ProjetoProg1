@@ -15,6 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
+import javax.swing.table.DefaultTableModel;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -43,6 +46,7 @@ public class TelaTotem extends javax.swing.JFrame {
     public TelaTotem() {
         initComponents();
 
+        // Configurando os itens do cardápio disponíveis
         alimentos = new ArrayList<>();
         alimentos.add(new ItemCardapio("Baguete", 11.00f, List.of("Frango", "Salame")));
         alimentos.add(new ItemCardapio("Pastel", 5.50f, List.of("Frango", "Calabresa", "Frango c/ Catupiry")));
@@ -54,8 +58,24 @@ public class TelaTotem extends javax.swing.JFrame {
         alimentos.add(new ItemCardapio("Bauru", 6.00f, List.of()));
         alimentos.add(new ItemCardapio("Croissant", 3.00f, List.of()));
 
+        // Configurando os itens do cardápio no JComboBox
         for (ItemCardapio alimento : alimentos) {
             jAlimentoSelect.addItem(alimento.toString());
+        }
+        
+        // Configurando a largura das colunas da tabela de itens do pedido
+        jListaPedido.getColumnModel().getColumn(0).setPreferredWidth((int) (jListaPedido.getParent().getWidth() * 0.75));
+
+        // Evita que o usuário edite a tabela de itens do pedido
+        jListaPedido.setDefaultEditor(Object.class, null);
+
+        // Verifica se o arquivo de pedidos existe, caso não exista, cria um novo
+        if (!listaPedidosArquivo.exists()) {
+            try {
+                listaPedidosArquivo.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(TelaTotem.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -86,8 +106,6 @@ public class TelaTotem extends javax.swing.JFrame {
         jSaborSelect = new javax.swing.JComboBox<>();
         jAddButton = new javax.swing.JButton();
         jListaPedidoLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListaPedido = new javax.swing.JList<>();
         jExcluirItemButton = new javax.swing.JButton();
         jTotalPedidoLabel = new javax.swing.JLabel();
         jSalvarButton = new javax.swing.JButton();
@@ -96,6 +114,8 @@ public class TelaTotem extends javax.swing.JFrame {
         jCancelarButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jTotalPedido = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jListaPedido = new javax.swing.JTable();
         jVerPedidos = new javax.swing.JPanel();
         jTituloInicio1 = new javax.swing.JLabel();
         jSubtituloInicio1 = new javax.swing.JLabel();
@@ -175,7 +195,7 @@ public class TelaTotem extends javax.swing.JFrame {
                         .addGroup(jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(verPedidosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jNovoPedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 66, Short.MAX_VALUE)))
+                        .addGap(0, 84, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jTelaInicialLayout.setVerticalGroup(
@@ -189,7 +209,7 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addComponent(jNovoPedidoButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(verPedidosButton)
-                .addContainerGap(255, Short.MAX_VALUE))
+                .addContainerGap(271, Short.MAX_VALUE))
         );
 
         jTela.addTab("Início", new javax.swing.ImageIcon(getClass().getResource("/Icons/home-custom.png")), jTelaInicial); // NOI18N
@@ -224,16 +244,7 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jListaPedidoLabel.setLabelFor(jScrollPane1);
         jListaPedidoLabel.setText("Itens do pedido:");
-
-        jListaPedido.setModel(new DefaultListModel());
-        jListaPedido.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                itemPedidoSelecionado(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jListaPedido);
 
         jExcluirItemButton.setText("Excluir Item Selecionado");
         jExcluirItemButton.setEnabled(false);
@@ -298,6 +309,25 @@ public class TelaTotem extends javax.swing.JFrame {
             .addComponent(jTotalPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
         );
 
+        jListaPedido.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        jListaPedido.setModel(new DefaultTableModel(new Object[]{"Item", "Valor"}, 0));
+        jListaPedido.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        jListaPedido.setAutoscrolls(false);
+        jListaPedido.setShowGrid(false);
+        jListaPedido.setTableHeader(null);
+        jListaPedido.setUpdateSelectionOnSort(false);
+        jListaPedido.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                reiniciaBotaoExcluir(evt);
+            }
+        });
+        jListaPedido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                itemPedidoSelecionado(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jListaPedido);
+
         javax.swing.GroupLayout jNovoPedidoLayout = new javax.swing.GroupLayout(jNovoPedido);
         jNovoPedido.setLayout(jNovoPedidoLayout);
         jNovoPedidoLayout.setHorizontalGroup(
@@ -306,18 +336,17 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addGap(117, 117, 117)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jNovoPedidoLayout.createSequentialGroup()
+            .addGroup(jNovoPedidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTotalPedidoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jGeraRelatorioIndividual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSalvarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jVoltarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(jAddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSubtitulo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jNovoPedidoLayout.createSequentialGroup()
+                .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTotalPedidoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jGeraRelatorioIndividual, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSalvarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jVoltarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jAddButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                    .addComponent(jSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
                         .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jAlimentoSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jAlimentoLabel))
@@ -327,11 +356,12 @@ public class TelaTotem extends javax.swing.JFrame {
                                 .addComponent(jSaborLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jSaborSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jNovoPedidoLayout.createSequentialGroup()
+                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
                         .addComponent(jListaPedidoLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jExcluirItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jCancelarButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jCancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jNovoPedidoLayout.setVerticalGroup(
@@ -353,15 +383,15 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addComponent(jAddButton)
                 .addGap(18, 18, 18)
                 .addComponent(jListaPedidoLabel)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jExcluirItemButton)
                 .addGap(18, 18, 18)
                 .addComponent(jTotalPedidoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
                 .addComponent(jCancelarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jGeraRelatorioIndividual)
@@ -420,7 +450,7 @@ public class TelaTotem extends javax.swing.JFrame {
             .addGroup(jVerPedidosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jVerPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                    .addComponent(jTituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
                     .addComponent(jSubtituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jVoltarButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3)
@@ -501,16 +531,6 @@ public class TelaTotem extends javax.swing.JFrame {
         atualizaListaPedido();
     }//GEN-LAST:event_adicionaItemPedido
 
-    private void itemPedidoSelecionado(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPedidoSelecionado
-        if (jListaPedido.getSelectedIndex() < 0) {
-            jExcluirItemButton.setEnabled(false);
-            return;
-        }
-
-        itemPedidoSelecionado = jListaPedido.getSelectedIndex();
-        jExcluirItemButton.setEnabled(true);
-    }//GEN-LAST:event_itemPedidoSelecionado
-
     private void excluirItemPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirItemPedido
         pedido.removeItem(itemPedidoSelecionado);
 
@@ -533,8 +553,8 @@ public class TelaTotem extends javax.swing.JFrame {
         alternaModoEdicao(false);
 
         pedido = new Pedido();
+
         atualizaListaPedido();
-        jExcluirItemButton.setEnabled(false);
 
         emitePopupAviso("Pedido salvo com sucesso!");
     }//GEN-LAST:event_salvarPedido
@@ -613,7 +633,7 @@ public class TelaTotem extends javax.swing.JFrame {
 
         atualizaListaPedido();
 
-        emitePopupAviso("Pedido cancelado com sucesso!");
+        emitePopupAviso("Pedido removido com sucesso!");
     }//GEN-LAST:event_cancelarPedido
 
     private void gerarRelaorioGeral(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelaorioGeral
@@ -650,6 +670,22 @@ public class TelaTotem extends javax.swing.JFrame {
             emitePopupAviso("Falha ao gerar o relatório!");
         }
     }//GEN-LAST:event_gerarRelaorioGeral
+
+    private void itemPedidoSelecionado(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemPedidoSelecionado
+        if (jListaPedido.getSelectedRow()< 0) {
+            jExcluirItemButton.setEnabled(false);
+            return;
+        }
+        
+        itemPedidoSelecionado = jListaPedido.getSelectedRow();
+        jExcluirItemButton.setEnabled(true);
+    }//GEN-LAST:event_itemPedidoSelecionado
+
+    private void reiniciaBotaoExcluir(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_reiniciaBotaoExcluir
+        if (evt.getOppositeComponent().equals(jExcluirItemButton)) return;
+        
+        jExcluirItemButton.setEnabled(false);
+    }//GEN-LAST:event_reiniciaBotaoExcluir
 
     private String getDataHoraAtual() {
         LocalDateTime now = LocalDateTime.now();
@@ -696,12 +732,12 @@ public class TelaTotem extends javax.swing.JFrame {
     }
 
     private void atualizaListaPedido() {
-        DefaultListModel<String> lista = (DefaultListModel<String>) jListaPedido.getModel();
+        DefaultTableModel lista = (DefaultTableModel) jListaPedido.getModel();
 
-        lista.removeAllElements();
+        lista.setRowCount(0);
 
         for (ItemPedido itemPedido : pedido.getItens()) {
-            lista.addElement(itemPedido.toString(true));
+            lista.addRow(new Object[]{itemPedido.toString(true), String.format("R$ %-5.2f" , itemPedido.getValor())});
         }
 
         jTotalPedido.setText(String.format("R$ %.2f", pedido.getValorTotal()));
@@ -710,6 +746,7 @@ public class TelaTotem extends javax.swing.JFrame {
             jCancelarButton.setEnabled(false);
             jSalvarButton.setEnabled(false);
             jGeraRelatorioIndividual.setEnabled(false);
+            jExcluirItemButton.setEnabled(false);
             return;
         }
 
@@ -732,11 +769,15 @@ public class TelaTotem extends javax.swing.JFrame {
         if (estado) {
             modoEdicao = true;
             jSubtitulo.setText(String.format("Editando pedido #%03d", indiceEdicao));
+
+            jCancelarButton.setText("Cancelar/Concluir pedido");
             return;
         }
 
         modoEdicao = false;
         jSubtitulo.setText("Novo pedido");
+
+        jCancelarButton.setText("Cancelar pedido");
     }
 
     private void emitePopupAviso(String mensagem) {
@@ -786,7 +827,7 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JButton jExcluirItemButton;
     private javax.swing.JButton jGeraRelatorioIndividual;
     private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jListaPedido;
+    private javax.swing.JTable jListaPedido;
     private javax.swing.JLabel jListaPedidoLabel;
     private javax.swing.JPanel jNovoPedido;
     private javax.swing.JButton jNovoPedidoButton;
@@ -795,9 +836,9 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JLabel jSaborLabel;
     private javax.swing.JComboBox<String> jSaborSelect;
     private javax.swing.JButton jSalvarButton;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel jSubtitulo;
     private javax.swing.JLabel jSubtituloInicio;
     private javax.swing.JLabel jSubtituloInicio1;
