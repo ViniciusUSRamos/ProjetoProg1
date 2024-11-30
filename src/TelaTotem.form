@@ -255,7 +255,7 @@
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jExcluirItemButton" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jCancelarButton1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jCancelarButton" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -293,7 +293,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTotalPedido" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="110" max="32767" attributes="0"/>
-                      <Component id="jCancelarButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCancelarButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jGeraRelatorioIndividual" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -454,14 +454,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gerarRelatorioIndividual"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jCancelarButton1">
+            <Component class="javax.swing.JButton" name="jCancelarButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancelar pedido"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCancelarButton1cancelarPedido"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarPedido"/>
               </Events>
             </Component>
           </SubComponents>
@@ -567,7 +567,7 @@
                     </Property>
                     <Property name="autoscrolls" type="boolean" value="false"/>
                     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Default Cursor"/>
+                      <Color id="Cursor Padr&#xe3;o"/>
                     </Property>
                   </Properties>
                   <Events>

@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import java.util.Comparator;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -59,11 +58,6 @@ public class TelaTotem extends javax.swing.JFrame {
         for (ItemCardapio alimento: alimentos) {
             jAlimentoSelect.addItem(alimento.toString());
         }
-        
-        for (Pedido p : getPedidosSalvos()) {
-            System.out.println(p.getValorTotal());
-        }
-        //gerarRelaorioGeral();
     }
 
     /**
@@ -101,7 +95,7 @@ public class TelaTotem extends javax.swing.JFrame {
         jSalvarButton = new javax.swing.JButton();
         jVoltarButton = new javax.swing.JButton();
         jGeraRelatorioIndividual = new javax.swing.JButton();
-        jCancelarButton1 = new javax.swing.JButton();
+        jCancelarButton = new javax.swing.JButton();
         jVerPedidos = new javax.swing.JPanel();
         jTituloInicio1 = new javax.swing.JLabel();
         jSubtituloInicio1 = new javax.swing.JLabel();
@@ -279,12 +273,12 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jCancelarButton1.setText("Cancelar pedido");
-        jCancelarButton1.setToolTipText("");
-        jCancelarButton1.setEnabled(false);
-        jCancelarButton1.addActionListener(new java.awt.event.ActionListener() {
+        jCancelarButton.setText("Cancelar pedido");
+        jCancelarButton.setToolTipText("");
+        jCancelarButton.setEnabled(false);
+        jCancelarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCancelarButton1cancelarPedido(evt);
+                cancelarPedido(evt);
             }
         });
 
@@ -327,7 +321,7 @@ public class TelaTotem extends javax.swing.JFrame {
                                 .addComponent(jListaPedidoLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCancelarButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jCancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jNovoPedidoLayout.setVerticalGroup(
@@ -358,7 +352,7 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
-                .addComponent(jCancelarButton1)
+                .addComponent(jCancelarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jGeraRelatorioIndividual)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -571,45 +565,77 @@ public class TelaTotem extends javax.swing.JFrame {
             escrever.println("-------------------------------------\n");
             
             for (ItemPedido item : pedido.getItens()) {
-                escrever.printf("%-20s %10.2f%n", item.getNome(), item.getValor());
+                escrever.printf("%-20s %16.2f%n", item.getNome(), item.getValor());
             }
             escrever.println("-------------------------------------");
-            escrever.printf("Total: %24.2f%n", pedido.getValorTotal());
+            escrever.printf("Total: %30.2f%n", pedido.getValorTotal());
             escrever.println("=====================================");
             
-            emitePopupAviso("NFS-e " + pedidoSelecionado + " gerada com sucesso!");
+            emitePopupAviso("NFS-e - Pedido " + pedidoSelecionado + " gerada com sucesso!");
         } catch (Exception e) {
             emitePopupAviso("Falha ao gerar NFS-e!");
         }
     }//GEN-LAST:event_gerarRelatorioIndividual
 
-    private void jCancelarButton1cancelarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelarButton1cancelarPedido
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCancelarButton1cancelarPedido
+    private void cancelarPedido(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarPedido
+        pedido = new Pedido();
+        
+        if (modoEdicao) {
+            alternaModoEdicao(false);
+            
+            ArrayList<Pedido> pedidos = getPedidosSalvos();
+            
+            pedidos.remove(indiceEdicao);
+            
+            setPedidosSalvos(pedidos);
+        }
+        
+        atualizaListaPedido();
+        
+        emitePopupAviso("Pedido cancelado com sucesso!" );
+    }//GEN-LAST:event_cancelarPedido
 
     private void gerarRelaorioGeral(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerarRelaorioGeral
-        // TODO add your handling code here:
         String caminho = "RelatorioGeral.txt";
 
         try (PrintWriter escrever = new PrintWriter(new FileWriter(caminho))) {
             List<Pedido> pedidosSalvos = getPedidosSalvos(); 
 
+            escrever.println("========== RELATÓRIO GERAL ==========");
+            escrever.println("----------   BAR DO TIRI   ----------");
+            escrever.println(String.format("-------- %s --------\n", getDataHoraAtual()));
+
             for (int i = 0; i < pedidosSalvos.size(); i++) {
-                Pedido pedido = pedidosSalvos.get(i);
-                escrever.println("Pedido #" + (i + 1)); 
-                for (ItemPedido item : pedido.getItens()) {
-                    escrever.println(item.toString(true)); 
+                Pedido p = pedidosSalvos.get(i);
+
+                escrever.println("============ PEDIDO #" + String.format("%03d", (i + 1)) + " ============");
+                escrever.println("Nome do item:                  Valor:");
+
+                for (ItemPedido item : p.getItens()) {
+                    escrever.printf("%-30s %6.2f%n", getDescricaoItem(item) , item.getValor());
                 }
-                escrever.println("Valor Total: R$ " + pedido.getValorTotal()); 
-                escrever.println("-------------------------"); 
+
+                escrever.println("-------------------------------------");
+                escrever.printf("Total: %30.2f%n\n", p.getValorTotal());
             }
-            
+            escrever.println("=====================================");
+
             emitePopupAviso("Relatório gerado com sucesso!");
         } catch (Exception e) {
-            e.printStackTrace(); 
             emitePopupAviso("Falha ao gerar o relatório!");
         }
     }//GEN-LAST:event_gerarRelaorioGeral
+
+    private Object getDescricaoItem(ItemPedido item) {
+        return item.getSabor() == null ? item.getNome() : item.getNome() + " de " + item.getSabor();
+    }
+
+    private String getDataHoraAtual() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+        return formattedDateTime;
+    }
     
     
     /*private void gerarRelaorioGeral() {                                    
@@ -661,9 +687,9 @@ public class TelaTotem extends javax.swing.JFrame {
 
         try {
             fos = new FileOutputStream(listaPedidosArquivo);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(pedidos);
-            oos.close();
+            try (ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                oos.writeObject(pedidos);
+            }
             fos.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TelaTotem.class.getName()).log(Level.SEVERE, null, ex);
@@ -684,11 +710,13 @@ public class TelaTotem extends javax.swing.JFrame {
         jTotalPedido.setText(String.format("R$ %.2f", pedido.getValorTotal()));
         
         if (pedido.getItens().isEmpty()) {
+            jCancelarButton.setEnabled(false);
             jSalvarButton.setEnabled(false);
             jGeraRelatorioIndividual.setEnabled(false);
             return;
         }
         
+        jCancelarButton.setEnabled(true);
         jGeraRelatorioIndividual.setEnabled(true);
         jSalvarButton.setEnabled(true);
     }
@@ -747,10 +775,8 @@ public class TelaTotem extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaTotem().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaTotem().setVisible(true);
         });
     }
 
@@ -758,7 +784,7 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JButton jAddButton;
     private javax.swing.JLabel jAlimentoLabel;
     private javax.swing.JComboBox<String> jAlimentoSelect;
-    private javax.swing.JButton jCancelarButton1;
+    private javax.swing.JButton jCancelarButton;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JButton jExcluirItemButton;
     private javax.swing.JButton jGeraRelatorioIndividual;
