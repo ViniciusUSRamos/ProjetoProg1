@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.time.LocalDateTime;
@@ -98,7 +99,6 @@ public class TelaTotem extends javax.swing.JFrame {
         jNovoPedidoButton = new javax.swing.JButton();
         verPedidosButton = new javax.swing.JButton();
         jNovoPedido = new javax.swing.JPanel();
-        jTitulo = new javax.swing.JLabel();
         jSubtitulo = new javax.swing.JLabel();
         jAlimentoLabel = new javax.swing.JLabel();
         jAlimentoSelect = new javax.swing.JComboBox<>();
@@ -116,13 +116,15 @@ public class TelaTotem extends javax.swing.JFrame {
         jTotalPedido = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jListaPedido = new javax.swing.JTable();
+        jTituloInicio2 = new javax.swing.JLabel();
         jVerPedidos = new javax.swing.JPanel();
-        jTituloInicio1 = new javax.swing.JLabel();
         jSubtituloInicio1 = new javax.swing.JLabel();
         jVoltarButton1 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPedidosList = new javax.swing.JList<>();
         jVoltarButton2 = new javax.swing.JButton();
+        jTituloInicio3 = new javax.swing.JLabel();
+        jSubtituloInicio2 = new javax.swing.JLabel();
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -150,29 +152,35 @@ public class TelaTotem extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(360, 640));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTelaInicial.setBackground(new java.awt.Color(51, 51, 51));
         jTelaInicial.setName("Início"); // NOI18N
 
         jTituloInicio.setBackground(new java.awt.Color(255, 255, 255));
         jTituloInicio.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
         jTituloInicio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTituloInicio.setText("BAR DO TIRI");
+        jTituloInicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/logo.png"))); // NOI18N
 
-        jSubtituloInicio.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jSubtituloInicio.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jSubtituloInicio.setForeground(new java.awt.Color(255, 145, 77));
         jSubtituloInicio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jSubtituloInicio.setText("Bem-vindo(a)!");
 
-        jNovoPedidoButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jNovoPedidoButton.setBackground(new java.awt.Color(255, 145, 77));
+        jNovoPedidoButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jNovoPedidoButton.setForeground(new java.awt.Color(255, 255, 255));
         jNovoPedidoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/plus-custom.png"))); // NOI18N
-        jNovoPedidoButton.setText("Novo Pedido");
+        jNovoPedidoButton.setLabel("NOVO PEDIDO");
         jNovoPedidoButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 novoPedido(evt);
             }
         });
 
-        verPedidosButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        verPedidosButton.setBackground(new java.awt.Color(255, 145, 77));
+        verPedidosButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        verPedidosButton.setForeground(new java.awt.Color(255, 255, 255));
         verPedidosButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/format-list-bulleted-custom.png"))); // NOI18N
-        verPedidosButton.setText("Ver Pedidos");
+        verPedidosButton.setText("VER PEDIDOS");
         verPedidosButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verPedidos(evt);
@@ -184,47 +192,39 @@ public class TelaTotem extends javax.swing.JFrame {
         jTelaInicialLayout.setHorizontalGroup(
             jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jTelaInicialLayout.createSequentialGroup()
-                .addGroup(jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jTelaInicialLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTituloInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSubtituloInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jTelaInicialLayout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addGroup(jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(verPedidosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jNovoPedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 84, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(verPedidosButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jNovoPedidoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSubtituloInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTituloInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         jTelaInicialLayout.setVerticalGroup(
             jTelaInicialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jTelaInicialLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTituloInicio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTituloInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(184, 184, 184)
                 .addComponent(jSubtituloInicio)
-                .addGap(218, 218, 218)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jNovoPedidoButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(verPedidosButton)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
-        jTela.addTab("Início", new javax.swing.ImageIcon(getClass().getResource("/Icons/home-custom.png")), jTelaInicial); // NOI18N
+        jTela.addTab("Início", jTelaInicial);
 
+        jNovoPedido.setBackground(new java.awt.Color(51, 51, 51));
         jNovoPedido.setName("Início"); // NOI18N
 
-        jTitulo.setBackground(new java.awt.Color(255, 255, 255));
-        jTitulo.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
-        jTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTitulo.setText("BAR DO TIRI");
-
-        jSubtitulo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jSubtitulo.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jSubtitulo.setForeground(new java.awt.Color(255, 145, 77));
         jSubtitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jSubtitulo.setText("Novo Pedido");
 
+        jAlimentoLabel.setForeground(new java.awt.Color(255, 145, 77));
         jAlimentoLabel.setLabelFor(jAlimentoSelect);
         jAlimentoLabel.setText("Alimento:");
 
@@ -234,19 +234,27 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
+        jSaborLabel.setForeground(new java.awt.Color(255, 145, 77));
         jSaborLabel.setLabelFor(jSaborSelect);
         jSaborLabel.setText("Sabor:");
 
-        jAddButton.setText("Adicionar Item ao Pedido");
+        jAddButton.setBackground(new java.awt.Color(255, 145, 77));
+        jAddButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jAddButton.setForeground(new java.awt.Color(255, 255, 255));
+        jAddButton.setText("ADICIONAR");
         jAddButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adicionaItemPedido(evt);
             }
         });
 
+        jListaPedidoLabel.setForeground(new java.awt.Color(255, 145, 77));
         jListaPedidoLabel.setText("Itens do pedido:");
 
-        jExcluirItemButton.setText("Excluir Item Selecionado");
+        jExcluirItemButton.setBackground(new java.awt.Color(255, 145, 77));
+        jExcluirItemButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jExcluirItemButton.setForeground(new java.awt.Color(255, 255, 255));
+        jExcluirItemButton.setText("EXCLUIR");
         jExcluirItemButton.setEnabled(false);
         jExcluirItemButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,11 +262,15 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
+        jTotalPedidoLabel.setForeground(new java.awt.Color(255, 145, 77));
         jTotalPedidoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jTotalPedidoLabel.setLabelFor(jTotalPedido);
         jTotalPedidoLabel.setText("Total do pedido:");
 
-        jSalvarButton.setText("Salvar");
+        jSalvarButton.setBackground(new java.awt.Color(255, 145, 77));
+        jSalvarButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jSalvarButton.setForeground(new java.awt.Color(255, 255, 255));
+        jSalvarButton.setText("SALVAR");
         jSalvarButton.setEnabled(false);
         jSalvarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -266,14 +278,20 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jVoltarButton.setText("Voltar");
+        jVoltarButton.setBackground(new java.awt.Color(255, 145, 77));
+        jVoltarButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jVoltarButton.setForeground(new java.awt.Color(255, 255, 255));
+        jVoltarButton.setText("VOLTAR");
         jVoltarButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 telaInicial(evt);
             }
         });
 
-        jGeraRelatorioIndividual.setText("Gerar Nota Fiscal");
+        jGeraRelatorioIndividual.setBackground(new java.awt.Color(255, 145, 77));
+        jGeraRelatorioIndividual.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jGeraRelatorioIndividual.setForeground(new java.awt.Color(255, 255, 255));
+        jGeraRelatorioIndividual.setText("GERAR NOTA FISCAL");
         jGeraRelatorioIndividual.setToolTipText("");
         jGeraRelatorioIndividual.setEnabled(false);
         jGeraRelatorioIndividual.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +300,10 @@ public class TelaTotem extends javax.swing.JFrame {
             }
         });
 
-        jCancelarButton.setText("Cancelar pedido");
+        jCancelarButton.setBackground(new java.awt.Color(255, 145, 77));
+        jCancelarButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jCancelarButton.setForeground(new java.awt.Color(255, 255, 255));
+        jCancelarButton.setText("CANCELAR");
         jCancelarButton.setToolTipText("");
         jCancelarButton.setEnabled(false);
         jCancelarButton.addActionListener(new java.awt.event.ActionListener() {
@@ -313,6 +334,7 @@ public class TelaTotem extends javax.swing.JFrame {
         jListaPedido.setModel(new DefaultTableModel(new Object[]{"Item", "Valor"}, 0));
         jListaPedido.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         jListaPedido.setAutoscrolls(false);
+        jListaPedido.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListaPedido.setShowGrid(false);
         jListaPedido.setTableHeader(null);
         jListaPedido.setUpdateSelectionOnSort(false);
@@ -328,14 +350,15 @@ public class TelaTotem extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(jListaPedido);
 
+        jTituloInicio2.setBackground(new java.awt.Color(255, 255, 255));
+        jTituloInicio2.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
+        jTituloInicio2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jTituloInicio2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/logo.png"))); // NOI18N
+
         javax.swing.GroupLayout jNovoPedidoLayout = new javax.swing.GroupLayout(jNovoPedido);
         jNovoPedido.setLayout(jNovoPedidoLayout);
         jNovoPedidoLayout.setHorizontalGroup(
             jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                .addGap(117, 117, 117)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jNovoPedidoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,7 +367,6 @@ public class TelaTotem extends javax.swing.JFrame {
                     .addComponent(jSalvarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jVoltarButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jAddButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
                     .addComponent(jSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jNovoPedidoLayout.createSequentialGroup()
                         .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,19 +378,25 @@ public class TelaTotem extends javax.swing.JFrame {
                                 .addComponent(jSaborLabel)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jSaborSelect, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
-                        .addComponent(jListaPedidoLabel)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jExcluirItemButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jCancelarButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jNovoPedidoLayout.createSequentialGroup()
+                        .addGroup(jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jListaPedidoLabel)
+                            .addComponent(jTituloInicio2, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jNovoPedidoLayout.createSequentialGroup()
+                .addGap(126, 126, 126)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jNovoPedidoLayout.setVerticalGroup(
             jNovoPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jNovoPedidoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTitulo)
+                .addComponent(jTituloInicio2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSubtitulo)
                 .addGap(18, 18, 18)
@@ -391,7 +419,7 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addComponent(jTotalPedidoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                 .addComponent(jCancelarButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jGeraRelatorioIndividual)
@@ -402,33 +430,34 @@ public class TelaTotem extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTitulo.getAccessibleContext().setAccessibleDescription("");
+        jTela.addTab("Pedido", jNovoPedido);
 
-        jTela.addTab("Pedido", new javax.swing.ImageIcon(getClass().getResource("/Icons/plus-custom.png")), jNovoPedido); // NOI18N
-
+        jVerPedidos.setBackground(new java.awt.Color(51, 51, 51));
         jVerPedidos.setName("Início"); // NOI18N
 
-        jTituloInicio1.setBackground(new java.awt.Color(255, 255, 255));
-        jTituloInicio1.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
-        jTituloInicio1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jTituloInicio1.setText("BAR DO TIRI");
-
-        jSubtituloInicio1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jSubtituloInicio1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jSubtituloInicio1.setForeground(new java.awt.Color(255, 145, 77));
         jSubtituloInicio1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jSubtituloInicio1.setText("Pedidos");
 
-        jVoltarButton1.setText("Voltar");
+        jVoltarButton1.setBackground(new java.awt.Color(255, 145, 77));
+        jVoltarButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jVoltarButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jVoltarButton1.setText("VOLTAR");
         jVoltarButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 telaInicialPedidos(evt);
             }
         });
 
+        jPedidosList.setBackground(new java.awt.Color(102, 102, 102));
         jPedidosList.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jPedidosList.setForeground(new java.awt.Color(255, 145, 77));
         jPedidosList.setModel(new DefaultListModel<String>()
         );
+        jPedidosList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jPedidosList.setAutoscrolls(false);
-        jPedidosList.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPedidosList.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPedidosList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 pedidoSelecionado(evt);
@@ -436,12 +465,25 @@ public class TelaTotem extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jPedidosList);
 
-        jVoltarButton2.setText("Relatório de Pedidos");
+        jVoltarButton2.setBackground(new java.awt.Color(255, 145, 77));
+        jVoltarButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jVoltarButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jVoltarButton2.setText("GERAR RELATÓRIO GERAL");
         jVoltarButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gerarRelaorioGeral(evt);
             }
         });
+
+        jTituloInicio3.setBackground(new java.awt.Color(255, 255, 255));
+        jTituloInicio3.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
+        jTituloInicio3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jTituloInicio3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/logo.png"))); // NOI18N
+
+        jSubtituloInicio2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jSubtituloInicio2.setForeground(new java.awt.Color(255, 145, 77));
+        jSubtituloInicio2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jSubtituloInicio2.setText("Clique em um pedido para visualizá-lo");
 
         javax.swing.GroupLayout jVerPedidosLayout = new javax.swing.GroupLayout(jVerPedidos);
         jVerPedidos.setLayout(jVerPedidosLayout);
@@ -450,30 +492,35 @@ public class TelaTotem extends javax.swing.JFrame {
             .addGroup(jVerPedidosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jVerPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
                     .addComponent(jSubtituloInicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jVoltarButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3)
-                    .addComponent(jVoltarButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jVoltarButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jVerPedidosLayout.createSequentialGroup()
+                        .addComponent(jTituloInicio3, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jSubtituloInicio2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jVerPedidosLayout.setVerticalGroup(
             jVerPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jVerPedidosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTituloInicio1)
+                .addComponent(jTituloInicio3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSubtituloInicio1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSubtituloInicio2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jVoltarButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jVoltarButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        jTela.addTab("Pedidos", new javax.swing.ImageIcon(getClass().getResource("/Icons/format-list-bulleted-custom.png")), jVerPedidos); // NOI18N
+        jTela.addTab("Pedidos", jVerPedidos);
 
         getContentPane().add(jTela, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -40, -1, 680));
 
@@ -490,7 +537,7 @@ public class TelaTotem extends javax.swing.JFrame {
     }//GEN-LAST:event_telaInicial
 
     private void novoPedido(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_novoPedido
-        jSubtitulo.setText("Novo pedido");
+        jSubtitulo.setText("Novo Pedido");
 
         modoEdicao = false;
         indiceEdicao = -1;
@@ -600,7 +647,7 @@ public class TelaTotem extends javax.swing.JFrame {
             escrever.println("Nome do item:                  Valor:");
 
             for (ItemPedido item : pedido.getItens()) {
-                escrever.printf("%-20s %16.2f%n", item.toString(true), item.getValor());
+                escrever.printf("%-30s %6.2f%n", item.toString(true), item.getValor());
             }
             escrever.println("-------------------------------------");
             escrever.printf("Total: %30.2f%n", pedido.getValorTotal());
@@ -768,16 +815,16 @@ public class TelaTotem extends javax.swing.JFrame {
     private void alternaModoEdicao(boolean estado) {
         if (estado) {
             modoEdicao = true;
-            jSubtitulo.setText(String.format("Editando pedido #%03d", indiceEdicao));
+            jSubtitulo.setText(String.format("Editando Pedido #%03d", indiceEdicao));
 
-            jCancelarButton.setText("Cancelar/Concluir pedido");
+            jCancelarButton.setText("CONCLUIR/CANCELAR");
             return;
         }
 
         modoEdicao = false;
-        jSubtitulo.setText("Novo pedido");
+        jSubtitulo.setText("Novo Pedido");
 
-        jCancelarButton.setText("Cancelar pedido");
+        jCancelarButton.setText("CANCELAR");
     }
 
     private void emitePopupAviso(String mensagem) {
@@ -842,11 +889,12 @@ public class TelaTotem extends javax.swing.JFrame {
     private javax.swing.JLabel jSubtitulo;
     private javax.swing.JLabel jSubtituloInicio;
     private javax.swing.JLabel jSubtituloInicio1;
+    private javax.swing.JLabel jSubtituloInicio2;
     private javax.swing.JTabbedPane jTela;
     private javax.swing.JPanel jTelaInicial;
-    private javax.swing.JLabel jTitulo;
     private javax.swing.JLabel jTituloInicio;
-    private javax.swing.JLabel jTituloInicio1;
+    private javax.swing.JLabel jTituloInicio2;
+    private javax.swing.JLabel jTituloInicio3;
     private javax.swing.JLabel jTotalPedido;
     private javax.swing.JLabel jTotalPedidoLabel;
     private javax.swing.JPanel jVerPedidos;
